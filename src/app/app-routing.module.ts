@@ -1,29 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common'; 
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'Resume',
+    redirectTo: 'home',
   },
   {
-    path: 'Resume',
+    path: 'home',
     loadChildren: () =>
       import('./components/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'Resume/contact',
+    path: 'contact',
     loadChildren: () =>
       import('./components/contact/contact.module').then((m) => m.ContactModule),
   },
   {
-    path: 'Resume/work',
+    path: 'work',
     loadChildren: () =>
       import('./components/work/work.module').then((m) => m.WorkModule),
   },
   {
-    path: 'Resume/tech',
+    path: 'tech',
     loadChildren: () =>
       import('./components/tech/tech.module').then((m) => m.TechModule),
   },
@@ -32,5 +33,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/Resume' },
+    { provide: LocationStrategy, useClass: PathLocationStrategy }
+  ]
 })
 export class AppRoutingModule {}
