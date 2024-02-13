@@ -1,3 +1,3 @@
-# Página de Curriculum - Martin Pedraza
+# Resume Page - Martin Pedraza
 
-¡Bienvenido a mi página de curriculum! Aquí encontrarás información sobre mi experiencia, habilidades y proyectos destacados. Puedes acceder a la página [aquí](https://martin-pedraza.github.io/Resume) mediante GitHub Pages.
+Welcome to my resume page! Here you will find information about my experience, skills and featured projects. You can access the page [here](https://martin-pedraza.github.io/Resume) through GitHub Pages.
