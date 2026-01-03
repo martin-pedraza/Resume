@@ -4,6 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const { PrismaPg } = require('@prisma/adapter-pg');
+const { PrismaClient } = require('./prisma/generated');
+const connectionString = `${process.env.DATABASE_URL}`;
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
