@@ -7,13 +7,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const { PrismaPg } = require('@prisma/adapter-pg');
-const { PrismaClient } = require('./prisma/generated');
+const { PrismaClient } = require('../prisma/generated');
 const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 const puppeteer = require('puppeteer');
-const resumeTheme = require('jsonresume-theme-developer-mono');
+const resumeTheme = require('jsonresume-theme-elegant');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -32,22 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(/** @type {{ message: any; status: any; }} */ err, /** @type {{ app: { get: (arg0: string) => string; }; }} */ req, /** @type {{ locals: { message: any; error: any; }; status: (arg0: any) => void; render: (arg0: string) => void; }} */ res, /** @type {any} */ next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
 
 app.get('/cv', async (req, res) => {
     const resumeData = {
@@ -165,11 +149,9 @@ app.get('/cv', async (req, res) => {
     const html = resumeTheme.render(resumeData);
 
     // Genera el PDF con Puppeteer
-    // @ts-ignore
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({headless: "new"});
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
-
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -182,5 +164,21 @@ app.get('/cv', async (req, res) => {
     res.contentType('application/pdf');
     res.send(pdf);
   });
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(/** @type {{ message: any; status: any; }} */ err, /** @type {{ app: { get: (arg0: string) => string; }; }} */ req, /** @type {{ locals: { message: any; error: any; }; status: (arg0: any) => void; render: (arg0: string) => void; }} */ res, /** @type {any} */ next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 module.exports = app;
